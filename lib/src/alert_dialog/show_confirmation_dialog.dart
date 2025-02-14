@@ -2,6 +2,7 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
+import 'package:mongol/mongol.dart';
 
 /// Show [confirmation dialog](https://material.io/components/dialogs#confirmation-dialog),
 /// whose appearance is adaptive according to platform
@@ -45,7 +46,8 @@ Future<T?> showConfirmationDialog<T>({
 
   final theme = Theme.of(context);
   final adaptiveStyle = style ?? AdaptiveDialog.instance.defaultStyle;
-  return adaptiveStyle.isMaterial(theme)
+  // return adaptiveStyle.isMaterial(theme)
+  return true
       ? showModal(
           context: context,
           useRootNavigator: useRootNavigator,
@@ -146,26 +148,26 @@ class _ConfirmationMaterialDialogState<T>
       canPop: widget.canPop,
       onPopInvokedWithResult: widget.onPopInvokedWithResult,
       child: Dialog(
-        child: Column(
+        child: Row(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(
-                horizontal: 24,
-                vertical: 16,
+                horizontal: 16,
+                vertical: 24,
               ),
-              child: Column(
+              child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  MongolText(
                     widget.title,
                     style: theme.textTheme.titleLarge,
                   ),
                   if (message != null)
                     Padding(
-                      padding: const EdgeInsets.only(top: 4),
-                      child: Text(
+                      padding: const EdgeInsets.only(left: 4),
+                      child: MongolText(
                         message,
                         style: theme.textTheme.bodySmall,
                       ),
@@ -173,19 +175,20 @@ class _ConfirmationMaterialDialogState<T>
                 ],
               ),
             ),
-            const Divider(height: 0),
+            const VerticalDivider(width: 0),
             Flexible(
               child: SizedBox(
                 height: widget.contentMaxHeight,
                 child: ListView(
                   // This switches physics automatically, so if there is enough
                   // height, `NeverScrollableScrollPhysics` will be set.
+                  scrollDirection: Axis.horizontal,
                   controller: _scrollController,
                   shrinkWrap: widget.shrinkWrap,
                   children: widget.actions
                       .map(
                         (action) => RadioListTile<T>(
-                          title: Text(
+                          title: MongolText(
                             action.label,
                             style: action.textStyle,
                           ),
@@ -203,35 +206,38 @@ class _ConfirmationMaterialDialogState<T>
                 ),
               ),
             ),
-            const Divider(height: 0),
+            const VerticalDivider(width: 0),
             Padding(
               padding: const EdgeInsets.all(4),
-              child: OverflowBar(
-                alignment: MainAxisAlignment.end,
-                overflowAlignment: OverflowBarAlignment.end,
-                spacing: 8,
-                children: [
-                  TextButton(
-                    child: Text(
-                      (widget.fullyCapitalized
-                              ? cancelLabel?.toUpperCase()
-                              : cancelLabel) ??
-                          MaterialLocalizations.of(context).cancelButtonLabel,
+              child: RotatedBox(
+                quarterTurns: 1,
+                child: OverflowBar(
+                  alignment: MainAxisAlignment.end,
+                  overflowAlignment: OverflowBarAlignment.end,
+                  spacing: 8,
+                  children: [
+                    TextButton(
+                      child: Text(
+                        (widget.fullyCapitalized
+                                ? cancelLabel?.toUpperCase()
+                                : cancelLabel) ??
+                            MaterialLocalizations.of(context).cancelButtonLabel,
+                      ),
+                      onPressed: () => widget.onSelect(null),
                     ),
-                    onPressed: () => widget.onSelect(null),
-                  ),
-                  TextButton(
-                    onPressed: _selectedKey == null
-                        ? null
-                        : () => widget.onSelect(_selectedKey),
-                    child: Text(
-                      (widget.fullyCapitalized
-                              ? okLabel?.toUpperCase()
-                              : okLabel) ??
-                          MaterialLocalizations.of(context).okButtonLabel,
+                    TextButton(
+                      onPressed: _selectedKey == null
+                          ? null
+                          : () => widget.onSelect(_selectedKey),
+                      child: Text(
+                        (widget.fullyCapitalized
+                                ? okLabel?.toUpperCase()
+                                : okLabel) ??
+                            MaterialLocalizations.of(context).okButtonLabel,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],

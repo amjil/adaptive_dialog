@@ -1,5 +1,6 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:adaptive_dialog/src/helper/macos_theme_wrapper.dart';
+import 'package:adaptive_dialog/src/alert_dialog/m_alert_dialog.dart';
 import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -141,7 +142,7 @@ Future<T?> showAlertDialog<T>({
           final dialog = PopScope(
             canPop: canPop,
             onPopInvokedWithResult: onPopInvokedWithResult,
-            child: AlertDialog(
+            child: MAlertDialog(
               title: titleText,
               content: messageText,
               actions: actions
