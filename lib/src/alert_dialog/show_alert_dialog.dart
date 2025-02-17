@@ -1,6 +1,5 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:adaptive_dialog/src/helper/macos_theme_wrapper.dart';
-import './m_alert_diaglog.dart';
 import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +7,7 @@ import 'package:intersperse/intersperse.dart';
 import 'package:macos_ui/macos_ui.dart';
 import 'package:meta/meta.dart';
 import 'package:mongol/mongol.dart';
+import './m_alert_dialog.dart';
 
 /// Show alert dialog, whose appearance is adaptive according to platform
 ///
@@ -99,7 +99,7 @@ Future<T?> showAlertDialog<T>({
               onPressed: (key) => pop(context: context, key: key),
             ),
           )
-          .intersperse(const SizedBox(height: 8))
+          .intersperse(const SizedBox(width: 8))
           .toList()
           .reversed
           .toList();
@@ -116,7 +116,7 @@ Future<T?> showAlertDialog<T>({
                 title: titleText ?? const SizedBox.shrink(),
                 message: messageText ?? const SizedBox.shrink(),
                 primaryButton: const _DummyEmptyMacosPushButton(),
-                suppress: Column(
+                suppress: Row(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: buttons,
                 ),
