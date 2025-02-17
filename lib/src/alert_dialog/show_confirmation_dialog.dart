@@ -46,8 +46,7 @@ Future<T?> showConfirmationDialog<T>({
 
   final theme = Theme.of(context);
   final adaptiveStyle = style ?? AdaptiveDialog.instance.defaultStyle;
-  // return adaptiveStyle.isMaterial(theme)
-  return true
+  return adaptiveStyle.isMaterial(theme)
       ? showModal(
           context: context,
           useRootNavigator: useRootNavigator,
@@ -177,8 +176,8 @@ class _ConfirmationMaterialDialogState<T>
             ),
             const VerticalDivider(width: 0),
             Flexible(
-              child: SizedBox(
-                height: widget.contentMaxHeight,
+              child: Expanded(
+                // height: widget.contentMaxHeight,
                 child: ListView(
                   // This switches physics automatically, so if there is enough
                   // height, `NeverScrollableScrollPhysics` will be set.

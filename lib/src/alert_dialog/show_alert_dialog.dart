@@ -1,12 +1,13 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:adaptive_dialog/src/helper/macos_theme_wrapper.dart';
-import 'package:adaptive_dialog/src/alert_dialog/m_alert_dialog.dart';
+import './m_alert_diaglog.dart';
 import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intersperse/intersperse.dart';
 import 'package:macos_ui/macos_ui.dart';
 import 'package:meta/meta.dart';
+import 'package:mongol/mongol.dart';
 
 /// Show alert dialog, whose appearance is adaptive according to platform
 ///
@@ -35,10 +36,8 @@ Future<T?> showAlertDialog<T>({
   Widget? macOSApplicationIcon,
   RouteSettings? routeSettings,
 }) {
-  void pop({required BuildContext context, required T? key}) => Navigator.of(
-        context,
-        rootNavigator: useRootNavigator,
-      ).pop(key);
+  void pop({required BuildContext context, required T? key}) =>
+      Navigator.of(context, rootNavigator: useRootNavigator).pop(key);
 
   final theme = Theme.of(context);
   final colorScheme = theme.colorScheme;
@@ -60,8 +59,8 @@ Future<T?> showAlertDialog<T>({
     );
   }
 
-  final titleText = title == null ? null : Text(title);
-  final messageText = message == null ? null : Text(message);
+  final titleText = title == null ? null : MongolText(title);
+  final messageText = message == null ? null : MongolText(message);
 
   final effectiveStyle = adaptiveStyle.effectiveStyle(theme);
   switch (effectiveStyle) {
@@ -143,6 +142,7 @@ Future<T?> showAlertDialog<T>({
             canPop: canPop,
             onPopInvokedWithResult: onPopInvokedWithResult,
             child: MAlertDialog(
+              // child: AlertDialog(
               title: titleText,
               content: messageText,
               actions: actions
@@ -168,17 +168,11 @@ Future<T?> showAlertDialog<T>({
 }
 
 // Used to specify [showOkCancelAlertDialog]'s [defaultType]
-enum OkCancelAlertDefaultType {
-  ok,
-  cancel,
-}
+enum OkCancelAlertDefaultType { ok, cancel }
 
 class _DummyEmptyMacosPushButton extends PushButton {
   const _DummyEmptyMacosPushButton()
-      : super(
-          child: const SizedBox.shrink(),
-          controlSize: ControlSize.large,
-        );
+      : super(child: const SizedBox.shrink(), controlSize: ControlSize.large);
   @override
   PushButtonState createState() => _DummyEmptyMacosPushButtonState();
 }

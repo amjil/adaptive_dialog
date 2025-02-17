@@ -3,6 +3,7 @@ import 'package:adaptive_dialog/src/modal_action_sheet/sheet_action.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:macos_ui/macos_ui.dart';
+import 'package:mongol/mongol.dart';
 
 /// Used for specifying showAlertDialog's actions.
 @immutable
@@ -50,7 +51,7 @@ extension AlertDialogActionEx<T> on AlertDialogAction<T> {
       controlSize: ControlSize.large,
       secondary: isDestructiveAction || !isDefaultAction,
       onPressed: () => onPressed(key),
-      child: Text(
+      child: MongolText(
         label,
         style: isDestructiveAction
             ? const TextStyle(

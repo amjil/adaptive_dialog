@@ -1,6 +1,8 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:mongol/mongol.dart';
+import '../alert_dialog/m_alert_diaglog.dart';
 
 // TODO(mono): 3ファイルでコピペ実装になっているのを良い感じにまとめたい
 class MaterialTextInputDialog extends StatefulWidget {
@@ -83,7 +85,7 @@ class _MaterialTextInputDialogState extends State<MaterialTextInputDialog> {
     }
 
     void cancel() => navigator.pop();
-    final titleText = title == null ? null : Text(title);
+    final titleText = title == null ? null : MongolText(title);
     final cancelLabel = widget.cancelLabel;
     final okLabel = widget.okLabel;
     final okText = Text(
@@ -98,19 +100,20 @@ class _MaterialTextInputDialogState extends State<MaterialTextInputDialog> {
       onPopInvokedWithResult: widget.onPopInvokedWithResult,
       child: Form(
         key: _formKey,
-        child: AlertDialog(
+        child: MAlertDialog(
           title: titleText,
-          content: Column(
+          content: Row(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (message != null)
                 Flexible(
                   child: Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
+                    padding: const EdgeInsets.only(right: 8),
                     child: Scrollbar(
                       child: SingleChildScrollView(
-                        child: Text(message),
+                        scrollDirection: Axis.horizontal,
+                        child: MongolText(message),
                       ),
                     ),
                   ),
@@ -118,28 +121,31 @@ class _MaterialTextInputDialogState extends State<MaterialTextInputDialog> {
               ..._textControllers.mapIndexed((i, c) {
                 final isLast = widget.textFields.length == i + 1;
                 final field = widget.textFields[i];
-                return TextFormField(
-                  controller: c,
-                  autofocus: i == 0,
-                  obscureText: field.obscureText,
-                  keyboardType: field.keyboardType,
-                  textCapitalization: field.textCapitalization,
-                  minLines: field.minLines,
-                  maxLines: field.maxLines,
-                  maxLength: field.maxLength,
-                  autocorrect: field.autocorrect,
-                  decoration: InputDecoration(
-                    hintText: field.hintText,
-                    prefixText: field.prefixText,
-                    suffixText: field.suffixText,
+                return RotatedBox(
+                  quarterTurns: 1,
+                  child: TextFormField(
+                    controller: c,
+                    autofocus: i == 0,
+                    obscureText: field.obscureText,
+                    keyboardType: field.keyboardType,
+                    textCapitalization: field.textCapitalization,
+                    minLines: field.minLines,
+                    maxLines: field.maxLines,
+                    maxLength: field.maxLength,
+                    autocorrect: field.autocorrect,
+                    decoration: InputDecoration(
+                      hintText: field.hintText,
+                      prefixText: field.prefixText,
+                      suffixText: field.suffixText,
+                    ),
+                    validator: field.validator,
+                    autovalidateMode: _autovalidateMode,
+                    textInputAction: isLast ? null : TextInputAction.next,
+                    onFieldSubmitted: isLast && widget.autoSubmit
+                        ? (_) => submitIfValid()
+                        : null,
+                    spellCheckConfiguration: field.spellCheckConfiguration,
                   ),
-                  validator: field.validator,
-                  autovalidateMode: _autovalidateMode,
-                  textInputAction: isLast ? null : TextInputAction.next,
-                  onFieldSubmitted: isLast && widget.autoSubmit
-                      ? (_) => submitIfValid()
-                      : null,
-                  spellCheckConfiguration: field.spellCheckConfiguration,
                 );
               }),
             ],

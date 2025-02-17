@@ -1,9 +1,11 @@
 import 'package:adaptive_dialog/src/action_callback.dart';
 import 'package:adaptive_dialog/src/extensions/extensions.dart';
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mongol/mongol.dart';
 
 import 'sheet_action.dart';
+import 'dialog.dart';
 
 class CupertinoModalActionSheet<T> extends StatelessWidget {
   const CupertinoModalActionSheet({
@@ -35,12 +37,12 @@ class CupertinoModalActionSheet<T> extends StatelessWidget {
       child: MediaQuery.withClampedTextScaling(
         minScaleFactor: 1,
         child: CupertinoActionSheet(
-          title: title == null ? null : Text(title),
-          message: message == null ? null : Text(message),
+          title: title == null ? null : MongolText(title),
+          message: message == null ? null : MongolText(message),
           cancelButton: CupertinoActionSheetAction(
             isDefaultAction: !actions.any((a) => a.isDefaultAction),
             onPressed: () => onPressed(null),
-            child: Text(
+            child: MongolText(
               cancelLabel ??
                   MaterialLocalizations.of(context)
                       .cancelButtonLabel
@@ -53,7 +55,7 @@ class CupertinoModalActionSheet<T> extends StatelessWidget {
                   isDestructiveAction: a.isDestructiveAction,
                   isDefaultAction: a.isDefaultAction,
                   onPressed: () => onPressed(a.key),
-                  child: Text(
+                  child: MongolText(
                     a.label,
                     style: a.textStyle,
                   ),

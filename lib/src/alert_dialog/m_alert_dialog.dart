@@ -30,8 +30,10 @@ import 'package:flutter/material.dart';
 // enum Department { treasury, state }
 // late BuildContext context;
 
-const EdgeInsets _defaultInsetPadding =
-    EdgeInsets.symmetric(horizontal: 24.0, vertical: 40.0);
+const EdgeInsets _defaultInsetPadding = EdgeInsets.symmetric(
+  horizontal: 24.0,
+  vertical: 40.0,
+);
 
 /// A Material Design dialog.
 ///
@@ -791,7 +793,8 @@ class MAlertDialog extends StatelessWidget {
         ),
         child: IconTheme(
           data: IconThemeData(
-              color: iconColor ?? dialogTheme.iconColor ?? defaults.iconColor),
+            color: iconColor ?? dialogTheme.iconColor ?? defaults.iconColor,
+          ),
           child: icon!,
         ),
       );
@@ -854,7 +857,10 @@ class MAlertDialog extends StatelessWidget {
               dialogTheme.contentTextStyle ??
               defaults.contentTextStyle!,
           child: Semantics(
-              container: true, explicitChildNodes: true, child: content),
+            container: true,
+            explicitChildNodes: true,
+            child: content,
+          ),
         ),
       );
     }
@@ -867,14 +873,18 @@ class MAlertDialog extends StatelessWidget {
             (theme.useMaterial3
                 ? defaults.actionsPadding!
                 : defaults.actionsPadding!.add(EdgeInsets.all(spacing))),
-        child: OverflowBar(
-          alignment: actionsAlignment ?? MainAxisAlignment.end,
-          spacing: spacing,
-          overflowAlignment:
-              actionsOverflowAlignment ?? OverflowBarAlignment.end,
-          overflowDirection: actionsOverflowDirection ?? VerticalDirection.down,
-          overflowSpacing: actionsOverflowButtonSpacing ?? 0,
-          children: actions!,
+        child: RotatedBox(
+          quarterTurns: 1,
+          child: OverflowBar(
+            alignment: actionsAlignment ?? MainAxisAlignment.end,
+            spacing: spacing,
+            overflowAlignment:
+                actionsOverflowAlignment ?? OverflowBarAlignment.end,
+            overflowDirection:
+                actionsOverflowDirection ?? VerticalDirection.down,
+            overflowSpacing: actionsOverflowButtonSpacing ?? 0,
+            children: actions!,
+          ),
         ),
       );
     }
@@ -1037,8 +1047,12 @@ class _MAdaptiveAlertDialog extends MAlertDialog {
 ///  * <https://material.io/design/components/dialogs.html#simple-dialog>
 class MSimpleDialogOption extends StatelessWidget {
   /// Creates an option for a [SimpleDialog].
-  const MSimpleDialogOption(
-      {super.key, this.onPressed, this.padding, this.child});
+  const MSimpleDialogOption({
+    super.key,
+    this.onPressed,
+    this.padding,
+    this.child,
+  });
 
   /// The callback that is called when this option is selected.
   ///
@@ -1278,8 +1292,9 @@ class MSimpleDialog extends StatelessWidget {
 
     Widget? titleWidget;
     if (title != null) {
-      final EdgeInsets effectiveTitlePadding =
-          titlePadding.resolve(textDirection);
+      final EdgeInsets effectiveTitlePadding = titlePadding.resolve(
+        textDirection,
+      );
       titleWidget = Padding(
         padding: EdgeInsets.only(
           left: effectiveTitlePadding.left * paddingScaleFactor,
@@ -1304,8 +1319,9 @@ class MSimpleDialog extends StatelessWidget {
 
     Widget? contentWidget;
     if (children != null) {
-      final EdgeInsets effectiveContentPadding =
-          contentPadding.resolve(textDirection);
+      final EdgeInsets effectiveContentPadding = contentPadding.resolve(
+        textDirection,
+      );
       contentWidget = Flexible(
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
@@ -1317,10 +1333,7 @@ class MSimpleDialog extends StatelessWidget {
                 : effectiveContentPadding.left,
             bottom: effectiveContentPadding.bottom * paddingScaleFactor,
           ),
-          child: ListBody(
-            children: children!,
-            mainAxis: Axis.horizontal,
-          ),
+          child: ListBody(children: children!, mainAxis: Axis.horizontal),
         ),
       );
     }
@@ -1334,7 +1347,7 @@ class MSimpleDialog extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             if (title != null) titleWidget!,
-            if (children != null) contentWidget!
+            if (children != null) contentWidget!,
           ],
         ),
       ),
@@ -1659,8 +1672,10 @@ class MDialogRoute<T> extends RawDialogRoute<T> {
   void _setAnimation(Animation<double> animation) {
     if (_curvedAnimation?.parent != animation) {
       _curvedAnimation?.dispose();
-      _curvedAnimation =
-          CurvedAnimation(parent: animation, curve: Curves.easeOut);
+      _curvedAnimation = CurvedAnimation(
+        parent: animation,
+        curve: Curves.easeOut,
+      );
     }
   }
 
@@ -1674,8 +1689,12 @@ class MDialogRoute<T> extends RawDialogRoute<T> {
     _setAnimation(animation);
     return FadeTransition(
       opacity: _curvedAnimation!,
-      child:
-          super.buildTransitions(context, animation, secondaryAnimation, child),
+      child: super.buildTransitions(
+        context,
+        animation,
+        secondaryAnimation,
+        child,
+      ),
     );
   }
 
@@ -1700,7 +1719,8 @@ class _DialogDefaultsM2 extends DialogThemeData {
           alignment: Alignment.center,
           elevation: 24.0,
           shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(4.0))),
+            borderRadius: BorderRadius.all(Radius.circular(4.0)),
+          ),
           clipBehavior: Clip.none,
         );
 
